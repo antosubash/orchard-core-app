@@ -4,6 +4,14 @@ EXPOSE 8080
 
 ENV ASPNETCORE_URLS=http://+:8080
 
+# Create App_Data directory and set permissions for the app user
+RUN mkdir -p /app/App_Data && \
+    chown -R app:app /app && \
+    chmod -R 755 /app/App_Data
+
+# Switch to the non-root user
+USER app
+
 USER app
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
@@ -20,5 +28,4 @@ RUN dotnet publish "MyProjectName.Cms.csproj" -c $configuration -o /app/publish 
 
 FROM base AS final
 WORKDIR /app
-RUN mkdir -p /app/App_Data && chmod -R 777 /app/App_Data
 ENTRYPOINT ["dotnet", "MyProjectName.Cms.dll"]
