@@ -20,9 +20,5 @@ RUN dotnet publish "MyProjectName.Cms.csproj" -c $configuration -o /app/publish 
 
 FROM base AS final
 WORKDIR /app
-# Create the App_Data directory and set permissions
-RUN mkdir -p /app/App_Data && \
-    chown -R app:app /app/App_Data && \
-    chmod -R 755 /app/App_Data
-COPY --from=publish /app/publish .
+RUN mkdir -p /app/App_Data && chmod -R 777 /app/App_Data
 ENTRYPOINT ["dotnet", "MyProjectName.Cms.dll"]
