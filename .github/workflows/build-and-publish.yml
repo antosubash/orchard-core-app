@@ -53,8 +53,8 @@ jobs:
           file: ./MyProjectName.Cms/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository  }}/myprojectname-cms:latest
-            ghcr.io/${{ github.repository  }}/myprojectname-cms:${{ steps.set-version.outputs.VERSION }}
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ steps.tag_version.outputs.new_version }}
 
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
